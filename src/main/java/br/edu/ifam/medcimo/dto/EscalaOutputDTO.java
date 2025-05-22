@@ -9,6 +9,7 @@ public class EscalaOutputDTO {
     private long id;
     private LocalDate data;
     private String turno;
+    private String funcionario;
 
     public EscalaOutputDTO() {
     }
@@ -17,6 +18,7 @@ public class EscalaOutputDTO {
         this.id = escala.getId();
         this.data = escala.getData();
         this.turno = escala.getTurno();
+        this.funcionario = escala.getFuncionario().getNome();
     }
 
     public long getId() {
@@ -41,5 +43,13 @@ public class EscalaOutputDTO {
 
     public void setTurno(String turno) {
         this.turno = turno;
+    }
+
+    public String getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(String funcionario) {
+        this.funcionario = funcionario;
     }
 }

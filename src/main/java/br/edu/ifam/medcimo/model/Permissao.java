@@ -7,7 +7,7 @@ public class Permissao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private long id;
 
     @Column(nullable = false)
     private String nivelAcesso;
@@ -21,18 +21,18 @@ public class Permissao {
     public Permissao() {
     }
 
-    public Permissao(Integer id, String nivelAcesso, String descricao, Funcionario funcionario) {
+    public Permissao(long id, String nivelAcesso, String descricao, Funcionario funcionario) {
         this.id = id;
         this.nivelAcesso = nivelAcesso;
         this.descricao = descricao;
         this.funcionario = funcionario;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(long id) {
         this.id = id;
     }
 
