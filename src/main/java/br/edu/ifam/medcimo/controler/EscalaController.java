@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/escala")
 @Tag(name = "Escala", description = "API para gerenciamento de escalas")
+@CrossOrigin(origins = "*")
 public class EscalaController {
 
     @Autowired

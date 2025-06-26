@@ -8,7 +8,7 @@ public class Medico extends Funcionario{
     @Column(unique=true, nullable=false)
     private String crm;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "especialidade_id")
     private Especialidade especialidade;
 

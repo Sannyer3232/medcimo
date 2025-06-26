@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/especialidades")
 @Tag(name = "Especialidades", description = "APIs para gerenciamento de especialidades médicas")
+@CrossOrigin(origins = "*")
 public class EspecialidadeController {
 
     @Autowired

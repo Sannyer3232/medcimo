@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/funcionarios")
 @Tag(name = "Funcionários", description = "APIs para gerenciamento de funcionários")
+@CrossOrigin(origins = "*")
 public class FuncionarioController {
     @Autowired
     private FuncionarioService funcionarioService;

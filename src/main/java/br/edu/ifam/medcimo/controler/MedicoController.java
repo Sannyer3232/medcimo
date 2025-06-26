@@ -22,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/medico")
 @Tag(name = "Médicos", description = "APIs para gerenciamento de médicos")
+@CrossOrigin(origins = "*")
 public class MedicoController {
 
     @Autowired
