@@ -7,11 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface FuncionarioRepository extends JpaRepository<Funcionario, Long> {
 
     @Query("Select f From Funcionario f Where f.nome = :nome")
     List<Funcionario> findByNome(@Param("nome") String nome);
+
+    Optional<Funcionario> findByEmail(String email);
 
 
 }

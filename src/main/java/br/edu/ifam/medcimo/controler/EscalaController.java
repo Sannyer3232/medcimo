@@ -12,6 +12,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +31,7 @@ public class EscalaController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar todas as escalas", description = "Retorna uma lista de todas as escalas cadastradas")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<EscalaOutputDTO>> list() {
         try {
             List<EscalaOutputDTO> escalas = escalaService.list();
@@ -45,6 +47,7 @@ public class EscalaController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Buscar escala por ID", description = "Retorna os detalhes de uma escala específica")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<EscalaOutputDTO> getById(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(escalaService.getById(id), HttpStatus.OK);
@@ -55,6 +58,7 @@ public class EscalaController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Criar nova escala", description = "Cria uma nova escala e retorna o objeto salvo com links")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<EntityModel<EscalaOutputDTO>> create(
             @RequestBody EscalaInputDTO escalaInputDTO,
             UriComponentsBuilder uriComponentsBuilder) {
@@ -85,6 +89,7 @@ public class EscalaController {
     }
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Atualizar escala", description = "Atualiza uma escala existente e retorna o objeto atualizado")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<EscalaOutputDTO> update(@PathVariable Long id, @RequestBody EscalaInputDTO escalaInputDTO) {
         try {
             EscalaOutputDTO updated = escalaService.update(id, escalaInputDTO);
@@ -96,6 +101,7 @@ public class EscalaController {
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletar escala", description = "Exclui uma escala com base no ID")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             escalaService.delete(id);

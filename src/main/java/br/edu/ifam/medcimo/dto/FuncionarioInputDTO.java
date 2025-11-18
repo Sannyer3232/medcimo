@@ -11,16 +11,20 @@ public class FuncionarioInputDTO {
     private String email;
     private String telefone;
     private EnderecoInputDTO endereco;
+    private String senha;
+    private String permissao;
 
     public FuncionarioInputDTO() {}
 
-    public FuncionarioInputDTO(String nome, String cargo, String departamento, String email, String telefone, EnderecoInputDTO endereco) {
+    public FuncionarioInputDTO(String nome, String cargo, String departamento, String email, String telefone, EnderecoInputDTO endereco, String senha, String permissao) {
         this.nome = nome;
         this.cargo = cargo;
         this.departamento = departamento;
         this.email = email;
         this.telefone = telefone;
         this.endereco = endereco;
+        this.senha = senha;
+        this.permissao = permissao;
     }
 
     public String getNome() {
@@ -71,6 +75,22 @@ public class FuncionarioInputDTO {
         this.endereco = endereco;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public String getPermissao() {
+        return permissao;
+    }
+
+    public void setPermissao(String permissao) {
+        this.permissao = permissao;
+    }
+
     public Funcionario build() {
         Funcionario funcionario = new Funcionario();
         funcionario.setNome(this.nome);
@@ -78,6 +98,7 @@ public class FuncionarioInputDTO {
         funcionario.setDepartamento(this.departamento);
         funcionario.setEmail(this.email);
         funcionario.setTelefone(this.telefone);
+        funcionario.setSenha(this.senha);
         funcionario.setEndereco(this.endereco.build());
         return funcionario;
     }

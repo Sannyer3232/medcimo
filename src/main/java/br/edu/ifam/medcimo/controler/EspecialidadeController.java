@@ -12,6 +12,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +31,7 @@ public class EspecialidadeController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar especialidades", description = "Retorna uma lista de todas as especialidades")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<EspecialidadeOutputDTO>> list() {
         try {
             List<EspecialidadeOutputDTO> lista = especialidadeService.listarEspecialidades();
@@ -45,6 +47,7 @@ public class EspecialidadeController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Buscar especialidade por ID", description = "Retorna os dados de uma especialidade específica")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<EspecialidadeOutputDTO> getById(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(especialidadeService.buscarPorId(id), HttpStatus.OK);
@@ -55,6 +58,7 @@ public class EspecialidadeController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Inserir especialidade", description = "Insere uma nova especialidade no banco de dados")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<EntityModel<EspecialidadeOutputDTO>> create(@RequestBody EspecialidadeInputDTO dto,
                                                                       UriComponentsBuilder uriComponentsBuilder) {
         try {
@@ -88,6 +92,7 @@ public class EspecialidadeController {
     }
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Atualizar especialidade", description = "Atualiza os dados de uma especialidade específica")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<EspecialidadeOutputDTO> update(@PathVariable Long id, @RequestBody EspecialidadeInputDTO dto) {
         try {
             return new ResponseEntity<>(especialidadeService.atualizar(id, dto), HttpStatus.OK);
@@ -98,6 +103,7 @@ public class EspecialidadeController {
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletar especialidade", description = "Remove uma especialidade pelo ID")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             especialidadeService.deletar(id);

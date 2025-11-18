@@ -12,6 +12,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -30,6 +31,7 @@ public class MedicoController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar todos os médicos", description = "Retorna uma lista com todos os médicos cadastrados")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<List<MedicoOutputDTO>> listar() {
         try {
             List<MedicoOutputDTO> medicos = medicoService.listarMedicos();
@@ -45,6 +47,7 @@ public class MedicoController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Buscar médico por ID", description = "Retorna os detalhes de um médico pelo ID")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<MedicoOutputDTO> buscarPorId(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(medicoService.buscarPorId(id), HttpStatus.OK);
@@ -55,6 +58,7 @@ public class MedicoController {
 
     @GetMapping(value = "/crm/{crm}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Buscar médico por CRM", description = "Retorna os detalhes de um médico pelo CRM")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MedicoOutputDTO> buscarPorCrm(@PathVariable String crm) {
         try {
             return new ResponseEntity<>(medicoService.buscarPorCrm(crm), HttpStatus.OK);
@@ -65,6 +69,7 @@ public class MedicoController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Criar novo médico", description = "Insere os dados de um novo médico e retorna o objeto salvo")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<EntityModel<MedicoOutputDTO>> criar(@RequestBody MedicoInputDTO medicoInputDTO, UriComponentsBuilder uriBuilder) {
         try {
             MedicoOutputDTO medicoSalvo = medicoService.create(medicoInputDTO);
@@ -90,6 +95,7 @@ public class MedicoController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Atualizar médico", description = "Atualiza os dados de um médico existente")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<MedicoOutputDTO> atualizar(@PathVariable Long id, @RequestBody MedicoInputDTO medicoInputDTO) {
         try {
             MedicoOutputDTO medicoAtualizado = medicoService.upadte(id, medicoInputDTO);
@@ -101,6 +107,7 @@ public class MedicoController {
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletar médico", description = "Remove um médico pelo ID")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> deletar(@PathVariable Long id) {
         try {
             medicoService.deletar(id);

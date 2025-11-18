@@ -32,6 +32,7 @@ public class MedicoInputDTO extends FuncionarioInputDTO{
         medico.setEmail(this.getEmail());
         medico.setTelefone(this.getTelefone());
         medico.setEndereco(this.getEndereco().build());
+        medico.setSenha(this.getSenha());
         medico.setCrm(this.getCrm());
         medico.setEspecialidade(especialidadeRepository.findById(this.getEspecialidade()).orElse(null));
         return medico;

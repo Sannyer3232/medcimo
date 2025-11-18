@@ -12,6 +12,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,6 +30,7 @@ public class FuncionarioController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Listar todos os funcionários", description = "Retorna uma lista de todos os funcionários registrados")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<List<FuncionarioOutputDTO>> list() {
         try {
             List<FuncionarioOutputDTO> funcionarios = funcionarioService.listaFuncionario();
@@ -44,6 +46,7 @@ public class FuncionarioController {
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Buscar funcionário por ID", description = "Retorna os detalhes de um funcionário específico")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<FuncionarioOutputDTO> getById(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(funcionarioService.findFuncionarioById(id), HttpStatus.OK);
@@ -54,6 +57,7 @@ public class FuncionarioController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Inserir funcionário", description = "Insere os dados de um funcionário e retorna o objeto salvo")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<EntityModel<FuncionarioOutputDTO>> create(@RequestBody FuncionarioInputDTO funcionarioInputDTO, UriComponentsBuilder uriBuilder) {
         try {
             FuncionarioOutputDTO funcionarioSalvo = funcionarioService.creat(funcionarioInputDTO);
@@ -81,6 +85,7 @@ public class FuncionarioController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Atualizar dados de funcionário", description = "Atualiza os dados de um funcionário e retorna o objeto atualizado")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_GERENTE')")
     public ResponseEntity<FuncionarioOutputDTO> update(@PathVariable Long id, @RequestBody FuncionarioInputDTO funcionarioInputDTO) {
         try {
             return new ResponseEntity<>(funcionarioService.update(id, funcionarioInputDTO), HttpStatus.OK);
@@ -91,6 +96,7 @@ public class FuncionarioController {
 
     @DeleteMapping(value = "/{id}")
     @Operation(summary = "Deletar funcionário por ID", description = "Deleta um funcionário específico")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         try {
             funcionarioService.delete(id);

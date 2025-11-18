@@ -1,6 +1,11 @@
 package br.edu.ifam.medcimo.dto;
 
 import br.edu.ifam.medcimo.model.Funcionario;
+import br.edu.ifam.medcimo.model.Permissao;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class FuncionarioOutputDTO {
 
@@ -11,6 +16,8 @@ public class FuncionarioOutputDTO {
     private String email;
     private String telefone;
     private EnderecoOutputDTO endereco;
+
+    private List<String> permissoes;
 
     public FuncionarioOutputDTO() {
     }
@@ -23,6 +30,14 @@ public class FuncionarioOutputDTO {
         this.email = funcionario.getEmail();
         this.telefone = funcionario.getTelefone();
         this.endereco = new EnderecoOutputDTO(funcionario.getEndereco());
+
+        if(funcionario.getPermissoes() != null) {
+            this.permissoes = funcionario.getPermissoes().stream()
+                    .map(Permissao::getNivelAcesso)
+                    .collect(Collectors.toList());
+        }else{
+            this.permissoes = new ArrayList<>();
+        }
     }
 
     public long getId() {
@@ -79,5 +94,13 @@ public class FuncionarioOutputDTO {
 
     public void setEndereco(EnderecoOutputDTO endereco) {
         this.endereco = endereco;
+    }
+
+    public List<String> getPermissoes() {
+        return permissoes;
+    }
+
+    public void setPermissoes(List<String> permissoes) {
+        this.permissoes = permissoes;
     }
 }

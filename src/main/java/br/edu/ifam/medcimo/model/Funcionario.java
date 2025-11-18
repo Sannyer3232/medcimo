@@ -22,27 +22,31 @@ public class Funcionario {
     private String email;
     @Column(nullable = false, length = 200, unique = true)
     private String telefone;
-
-    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    @Column(nullable = false, length = 200)
+    private String senha;
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Escala> escalas;
 
-    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "funcionario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Permissao> permissoes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "endereco_id")
     private Endereco endereco;
 
+
+
     public Funcionario() {
     }
 
-    public Funcionario(long id, String nome, String cargo, String departamento, String email, String telefone, List<Escala> escalas, List<Permissao> permissoes, Endereco endereco) {
+    public Funcionario(long id, String nome, String cargo, String departamento, String email, String telefone, String senha, List<Escala> escalas, List<Permissao> permissoes, Endereco endereco) {
         this.id = id;
         this.nome = nome;
         this.cargo = cargo;
         this.departamento = departamento;
         this.email = email;
         this.telefone = telefone;
+        this.senha = senha;
         this.escalas = escalas;
         this.permissoes = permissoes;
         this.endereco = endereco;
@@ -118,5 +122,13 @@ public class Funcionario {
 
     public void setEndereco(Endereco endereco) {
         this.endereco = endereco;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 }
